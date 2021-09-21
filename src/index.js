@@ -18,6 +18,9 @@ global.data = {
   actionOnceEvery: {},
   lockGame: {},
   total: 0,
+  channelLock: {},
+  forceLeave: {},
+  nextForceLeaveCheck: 0,
 }
 global.formatChannel = channel => channel.replace('#', '').toLowerCase()
 global._ = _
@@ -39,10 +42,12 @@ const start = async () => {
 
   chatbot.on('join', (channel, username, self) => {
     if (self) {
+      const currTimestamp = timestamp()
       data.total += 1
       const channelFormated = formatChannel(channel)
       console.debug(`Join Validate: ${channelFormated}, [${data.total} joined]`)
-      data.joined[channelFormated] = timestamp() + config.reVerifyViewerEvery
+      data.joined[channelFormated] = currTimestamp + config.reVerifyViewerEvery
+      data.forceLeave[channelFormated] = currTimestamp + config.forceLeaveAfter
     }
   })
 
@@ -52,6 +57,7 @@ const start = async () => {
       const channelFormated = formatChannel(channel)
       console.debug(`Part Validate: ${channelFormated}, [${data.total} joined]`)
       data.joined[channelFormated] = undefined
+      data.channelLock[channelFormated] = timestamp() + config.lockJoinAfterLeave
     }
   })
 

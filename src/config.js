@@ -16,16 +16,20 @@ const config = {
   apiCallEvery: 3,
   tmiActionEvery: 2,
 
-  reVerifyViewerEvery: 60 * 20,
-  reVerifyViewerMinimumChannel: 30,
+  reVerifyViewerEvery: 60 * 5,
+  reVerifyViewerMinimumChannel: 90,
+
+  forceLeaveAfter: 60 * 190,
+  lockJoinAfterLeave: 60 * 190,
+  checkForceLeaveEvery: 60 * 10,
 
   game: {
     streamPerPage: 100,
 
-    viewerMinimumEnter: 10,
-    viewerMaximumEnter: 40,
-    viewerMinimumLeave: 5,
-    viewerMaximumLeave: 60,
+    viewerMinimumEnter: 6,
+    viewerMaximumEnter: 50,
+    viewerMinimumLeave: 3,
+    viewerMaximumLeave: 80,
 
     lockGameUntil: 60 * 10,
 
@@ -54,10 +58,10 @@ const config = {
     {
       name: 'Genshin Impact',
       id: '513181',
-      viewerMinimumEnter: 8,
-      viewerMaximumEnter: 70,
-      viewerMinimumLeave: 4,
-      viewerMaximumLeave: 90,
+      viewerMinimumEnter: 6,
+      viewerMaximumEnter: 80,
+      viewerMinimumLeave: 3,
+      viewerMaximumLeave: 100,
     },
     {
       name: 'New World',
@@ -88,10 +92,12 @@ const config = {
       id: '313558',
       lockGameUntil: 60 * 90,
     },
-    // {
-    //   name: 'Black Desert Online',
-    //   id: '386821',
-    // },
+    {
+      name: 'Black Desert Online',
+      id: '386821',
+      language: 'en',
+      lockGameUntil: 60 * 90,
+    },
     {
       name: 'God of War',
       id: '6369',
@@ -110,6 +116,7 @@ const config = {
     {
       name: 'Just Chatting',
       id: '509658',
+      language: 'en',
     },
     {
       name: 'Path of Exile',
@@ -136,67 +143,81 @@ const config = {
       id: '19357',
       lockGameUntil: 60 * 90,
     },
-    // {
-    //   name: 'Grand Theft Auto V',
-    //   id: '32982',
-    // },
-    // {
-    //   name: 'Minecraft',
-    //   id: '27471',
-    // },
+    {
+      name: 'Grand Theft Auto V',
+      id: '32982',
+      language: 'en',
+    },
+    {
+      name: 'Minecraft',
+      id: '27471',
+      language: 'en',
+    },
     {
       name: 'League of Legends',
       id: '21779',
+      language: 'en',
     },
-    // {
-    //   name: 'Valorant',
-    //   id: '516575',
-    // },
-    // {
-    //   name: 'Dead by Daylight',
-    //   id: '491487',
-    // },
-    // {
-    //   name: 'Apex Legends',
-    //   id: '511224',
-    // },
-    // {
-    //   name: 'Hearthstone',
-    //   id: '138585',
-    // },
-    // {
-    //   name: 'Call of Duty: Warzone',
-    //   id: '512710',
-    // },
-    // {
-    //   name: 'Red Dead Redemption 2',
-    //   id: '493959',
-    // },
-    // {
-    //   name: 'Dota 2',
-    //   id: '29595',
-    // },
-    // {
-    //   name: 'Teamfight Tactics',
-    //   id: '513143',
-    // },
-    // {
-    //   name: 'Escape from Tarkov',
-    //   id: '491931',
-    // },
-    // {
-    //   name: 'Destiny 2',
-    //   id: '497057',
-    // },
+    {
+      name: 'Valorant',
+      id: '516575',
+      language: 'en',
+    },
+    {
+      name: 'Dead by Daylight',
+      id: '491487',
+      language: 'en',
+    },
+    {
+      name: 'Apex Legends',
+      id: '511224',
+      language: 'en',
+    },
+    {
+      name: 'Hearthstone',
+      id: '138585',
+      language: 'en',
+    },
+    {
+      name: 'Call of Duty: Warzone',
+      id: '512710',
+      language: 'en',
+    },
+    {
+      name: 'Red Dead Redemption 2',
+      id: '493959',
+      language: 'en',
+    },
+    {
+      name: 'Dota 2',
+      id: '29595',
+      language: 'en',
+    },
+    {
+      name: 'Teamfight Tactics',
+      id: '513143',
+      language: 'en',
+    },
+    {
+      name: 'Escape from Tarkov',
+      id: '491931',
+      language: 'en',
+    },
+    {
+      name: 'Destiny 2',
+      id: '497057',
+      lockGameUntil: 60 * 90,
+    },
     {
       name: 'Kena: Bridge of Spirits',
       id: '518004',
       lockGameUntil: 60 * 90,
     },
-    // {
-    //   name: 'Jump King',
-    //   id: '512070',
-    // },
+    {
+      name: 'Jump King',
+      id: '512070',
+      lockGameUntil: 60 * 90,
+    },
     {
       name: 'Art',
       id: '509660',

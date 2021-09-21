@@ -1,3 +1,6 @@
+import _ from 'lodash'
+import config from '../config'
+
 const { getStreams } = require('./getStreams').default
 const { reVerify } = require('./reVerify').default
 const { tmiAction } = require('./tmiAction').default
@@ -6,6 +9,22 @@ const loop = async () => {
   try {
     const currTimestamp = timestamp()
 
+    // force leave
+    if (data.nextForceLeaveCheck <= currTimestamp) {
+      _.forEach(data.forceLeave, (whenForceLeave, channel) => {
+        if (whenForceLeave <= currTimestamp && data.joined[channel]) {
+          data.joined[channel] = currTimestamp + (config.reVerifyViewerEvery * 999)
+          data.actions.push({
+            type: 'tmi',
+            action: 'part',
+            channel,
+          })
+          delete data.forceLeave[channel]
+        }
+      })
+      data.nextForceLeaveCheck = currTimestamp + config.checkForceLeaveEvery
+    }
+
     // reverify
     const reVerifyChannel = []
     _.forEach(data.joined, (reVerifyTimestamp, channel) => {
@@ -13,7 +32,7 @@ const loop = async () => {
         reVerifyChannel.push(channel)
         data.joined[channel] = currTimestamp + config.reVerifyViewerEvery
       }
-      if (reVerifyChannel.length >= 99) { return false }
+      if (reVerifyChannel.length === 100) { return false }
     })
 
     if (reVerifyChannel.length >= config.reVerifyViewerMinimumChannel

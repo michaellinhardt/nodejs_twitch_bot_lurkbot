@@ -51,7 +51,7 @@ const reVerify = async (reVerifyChannel) => {
     const formatedChannel = formatChannel(channel)
     const isStream = streams.find(s => formatChannel(s.user_login) === formatedChannel)
     if (!isStream) {
-      data.joined[formatedChannel] = nextVerify
+      data.joined[formatedChannel] = nextVerify * 999
       console.debug(`-- (offline) ${formatedChannel}: part`)
       // console.debug(`-- ${formatedChannel}: part`)
       data.actions.push({
