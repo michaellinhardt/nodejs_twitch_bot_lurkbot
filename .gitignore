@@ -1,0 +1,14 @@
+# Files related to development only
+.vscode
+.DS_Store
+node_modules
+
+# Configuration file for production and test env, with all private keys
+production.env.js
+test.env.js
+
+# Ignore certificates and cryptographic keys
+*.pem
+*.key
+*.p8
+*.p12

@@ -1,0 +1,33 @@
+{
+  "name": "twitch-lurkbot",
+  "version": "1.0.0",
+  "description": "Twitch Lurkbot",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "nodemon src/index.js --exec babel-node",
+    "lint": "./node_modules/eslint/bin/eslint.js src"
+  },
+  "author": "Michael Linhardt",
+  "repository": "https://github.com/teazyou/nodejs_twitch_bot_lurkbot",
+  "license": "ISC",
+  "dependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-zavatta": "^6.0.3",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "prettyjson": "^1.2.1",
+    "require-directory": "^2.1.1",
+    "superagent": "^6.1.0",
+    "tmi.js": "^1.8.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.5",
+    "@babel/node": "^7.15.4",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.15.6",
+    "@babel/register": "^7.15.3",
+    "babel-eslint": "^10.1.0",
+    "nodemon": "^2.0.12"
+  }
+}

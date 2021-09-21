@@ -1,0 +1,31 @@
+{
+    "globals": {
+      "data": true,
+      "formatChannel": true,
+      "chatbot": true,
+      "timestamp": true,
+      "_": true,
+      "superagent": true,
+      "dump": true,
+      "config": true
+    },
+    "extends": [
+      "zavatta"
+    ],
+    "rules": {
+      "indent": [
+        "error",
+        2
+      ],
+      "max-len": [
+        "warn",
+        {
+          "code": 120
+        }
+      ],
+      "no-sync": 0,
+      "camelcase": 0,
+      "no-console": 0,
+      "no-inline-comments": 0
+    }
+  }
