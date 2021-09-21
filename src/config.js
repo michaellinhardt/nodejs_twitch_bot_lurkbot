@@ -20,19 +20,19 @@ const config = {
 
   streamPerPage: 30,
 
-  reVerifyViewerEvery: 60 * 20,
-  reVerifyViewerMinimumChannel: 20,
+  reVerifyViewerEvery: 60 * 30,
+  reVerifyViewerMinimumChannel: 30,
 
-  actionOnceEvery: 60 * 30,
+  actionOnceEvery: 60 * 60,
 
   // lockGameUntil: 30,
   lockGameUntil: 60 * 30,
 
-  viewerMinimumEnter: 5,
-  viewerMaximumEnter: 40,
+  viewerMinimumEnter: 1,
+  viewerMaximumEnter: 60,
 
-  viewerMinimumLeave: 2,
-  viewerMaximumLeave: 50,
+  viewerMinimumLeave: 1,
+  viewerMaximumLeave: 100,
 
   games: [
     {

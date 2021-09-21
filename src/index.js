@@ -17,6 +17,7 @@ global.data = {
   pagination: {},
   actionOnceEvery: {},
   lockGame: {},
+  total: 0,
 }
 global.formatChannel = channel => channel.replace('#', '').toLowerCase()
 global._ = _
@@ -38,16 +39,18 @@ const start = async () => {
 
   chatbot.on('join', (channel, username, self) => {
     if (self) {
+      data.total += 1
       const channelFormated = formatChannel(channel)
-      console.debug(`\nJoin Validate: ${channelFormated}`)
+      console.debug(`Join Validate: ${channelFormated}, [${data.total} joined]`)
       data.joined[channelFormated] = timestamp() + config.reVerifyViewerEvery
     }
   })
 
   chatbot.on('part', (channel, username, self) => {
     if (self) {
+      data.total -= 1
       const channelFormated = formatChannel(channel)
-      console.debug(`\nPart Validate: ${channelFormated}`)
+      console.debug(`Part Validate: ${channelFormated}, [${data.total} joined]`)
       data.joined[channelFormated] = undefined
     }
   })
