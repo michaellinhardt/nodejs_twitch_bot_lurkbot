@@ -46,6 +46,7 @@ const config = {
       name: 'All Games',
       id: undefined,
       // language: 'en',
+      lockGameUntil: 60 * 10,
     },
     {
       name: 'Lost Ark',
@@ -54,6 +55,7 @@ const config = {
       viewerMaximumEnter: 80,
       viewerMinimumLeave: 3,
       viewerMaximumLeave: 100,
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Genshin Impact',
@@ -62,6 +64,7 @@ const config = {
       viewerMaximumEnter: 80,
       viewerMinimumLeave: 3,
       viewerMaximumLeave: 100,
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'New World',
@@ -71,6 +74,7 @@ const config = {
     {
       name: 'World of Warcraft',
       id: '18122',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Final Fantasy XIV Online',
@@ -117,6 +121,7 @@ const config = {
       name: 'Just Chatting',
       id: '509658',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Path of Exile',
@@ -147,61 +152,73 @@ const config = {
       name: 'Grand Theft Auto V',
       id: '32982',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Minecraft',
       id: '27471',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'League of Legends',
       id: '21779',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Valorant',
       id: '516575',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Dead by Daylight',
       id: '491487',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Apex Legends',
       id: '511224',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Hearthstone',
       id: '138585',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Call of Duty: Warzone',
       id: '512710',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Red Dead Redemption 2',
       id: '493959',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Dota 2',
       id: '29595',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Teamfight Tactics',
       id: '513143',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Escape from Tarkov',
       id: '491931',
       language: 'en',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Destiny 2',
@@ -221,6 +238,7 @@ const config = {
     {
       name: 'Art',
       id: '509660',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Rust',
@@ -230,10 +248,12 @@ const config = {
     {
       name: 'ASMR',
       id: '509659',
+      lockGameUntil: 60 * 30,
     },
     {
       name: 'Music',
       id: '26936',
+      lockGameUntil: 60 * 30,
     },
   ],
 
