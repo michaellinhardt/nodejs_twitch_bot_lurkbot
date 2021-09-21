@@ -7,45 +7,62 @@ const config = {
 
   sleepBeforeReady: 3000,
 
-  language: 'en',
-
   masterAccount: 'AnnieGreen',
 
   // verifyMasterEvery: 60 * 1000,
 
   loopEvery: 1000,
 
-  apiCallEvery: 6,
-  tmiActionEvery: 3,
+  apiCallEvery: 3,
+  tmiActionEvery: 2,
 
-  streamPerPage: 30,
-
-  reVerifyViewerEvery: 60 * 30,
+  reVerifyViewerEvery: 60 * 20,
   reVerifyViewerMinimumChannel: 30,
+
+  game: {
+    streamPerPage: 100,
+
+    viewerMinimumEnter: 10,
+    viewerMaximumEnter: 40,
+    viewerMinimumLeave: 5,
+    viewerMaximumLeave: 60,
+
+    lockGameUntil: 60 * 10,
+
+    language: undefined,
+    // language: 'en',
+  },
 
   actionOnceEvery: 60 * 60,
 
   // lockGameUntil: 30,
-  lockGameUntil: 60 * 30,
-
-  viewerMinimumEnter: 1,
-  viewerMaximumEnter: 60,
-
-  viewerMinimumLeave: 1,
-  viewerMaximumLeave: 100,
 
   games: [
     {
+      name: 'All Games',
+      id: undefined,
+      // language: 'en',
+    },
+    {
       name: 'Lost Ark',
       id: '490100',
+      viewerMinimumEnter: 6,
+      viewerMaximumEnter: 80,
+      viewerMinimumLeave: 3,
+      viewerMaximumLeave: 100,
     },
     {
       name: 'Genshin Impact',
       id: '513181',
+      viewerMinimumEnter: 8,
+      viewerMaximumEnter: 70,
+      viewerMinimumLeave: 4,
+      viewerMaximumLeave: 90,
     },
     {
       name: 'New World',
       id: '493597',
+      lockGameUntil: 60 * 90,
     },
     {
       name: 'World of Warcraft',
@@ -54,34 +71,41 @@ const config = {
     {
       name: 'Final Fantasy XIV Online',
       id: '24241',
+      lockGameUntil: 60 * 90,
     },
     {
       name: 'Diablo II',
       id: '1041',
+      lockGameUntil: 60 * 90,
     },
     {
       name: 'Diablo II: Resurrected',
       id: '1788326126',
+      lockGameUntil: 60 * 90,
     },
     {
       name: 'Diablo III',
       id: '313558',
+      lockGameUntil: 60 * 90,
     },
-    {
-      name: 'Black Desert Online',
-      id: '386821',
-    },
+    // {
+    //   name: 'Black Desert Online',
+    //   id: '386821',
+    // },
     {
       name: 'God of War',
       id: '6369',
+      lockGameUntil: 60 * 90,
     },
     {
       name: 'Dark Souls III',
       id: '490292',
+      lockGameUntil: 60 * 90,
     },
     {
       name: 'Monster Hunter: World',
       id: '497467',
+      lockGameUntil: 60 * 90,
     },
     {
       name: 'Just Chatting',
@@ -90,83 +114,89 @@ const config = {
     {
       name: 'Path of Exile',
       id: '29307',
+      lockGameUntil: 60 * 90,
     },
     {
       name: 'The Elder Scrolls Online',
       id: '65654',
+      lockGameUntil: 60 * 90,
     },
     {
       name: 'Dungeons & Dragons',
       id: '509577',
+      lockGameUntil: 60 * 90,
     },
     {
       name: 'The Elder Scrolls V: Skyrim',
       id: '30028',
+      lockGameUntil: 60 * 90,
     },
     {
       name: 'Guild Wars 2',
       id: '19357',
+      lockGameUntil: 60 * 90,
     },
-    {
-      name: 'Grand Theft Auto V',
-      id: '32982',
-    },
-    {
-      name: 'Minecraft',
-      id: '27471',
-    },
+    // {
+    //   name: 'Grand Theft Auto V',
+    //   id: '32982',
+    // },
+    // {
+    //   name: 'Minecraft',
+    //   id: '27471',
+    // },
     {
       name: 'League of Legends',
       id: '21779',
     },
-    {
-      name: 'Valorant',
-      id: '516575',
-    },
-    {
-      name: 'Dead by Daylight',
-      id: '491487',
-    },
-    {
-      name: 'Apex Legends',
-      id: '511224',
-    },
-    {
-      name: 'Hearthstone',
-      id: '138585',
-    },
-    {
-      name: 'Call of Duty: Warzone',
-      id: '512710',
-    },
-    {
-      name: 'Red Dead Redemption 2',
-      id: '493959',
-    },
-    {
-      name: 'Dota 2',
-      id: '29595',
-    },
-    {
-      name: 'Teamfight Tactics',
-      id: '513143',
-    },
-    {
-      name: 'Escape from Tarkov',
-      id: '491931',
-    },
-    {
-      name: 'Destiny 2',
-      id: '497057',
-    },
+    // {
+    //   name: 'Valorant',
+    //   id: '516575',
+    // },
+    // {
+    //   name: 'Dead by Daylight',
+    //   id: '491487',
+    // },
+    // {
+    //   name: 'Apex Legends',
+    //   id: '511224',
+    // },
+    // {
+    //   name: 'Hearthstone',
+    //   id: '138585',
+    // },
+    // {
+    //   name: 'Call of Duty: Warzone',
+    //   id: '512710',
+    // },
+    // {
+    //   name: 'Red Dead Redemption 2',
+    //   id: '493959',
+    // },
+    // {
+    //   name: 'Dota 2',
+    //   id: '29595',
+    // },
+    // {
+    //   name: 'Teamfight Tactics',
+    //   id: '513143',
+    // },
+    // {
+    //   name: 'Escape from Tarkov',
+    //   id: '491931',
+    // },
+    // {
+    //   name: 'Destiny 2',
+    //   id: '497057',
+    // },
     {
       name: 'Kena: Bridge of Spirits',
       id: '518004',
+      lockGameUntil: 60 * 90,
     },
-    {
-      name: 'Jump King',
-      id: '512070',
-    },
+    // {
+    //   name: 'Jump King',
+    //   id: '512070',
+    // },
     {
       name: 'Art',
       id: '509660',
@@ -174,6 +204,7 @@ const config = {
     {
       name: 'Rust',
       id: '263490',
+      lockGameUntil: 60 * 90,
     },
     {
       name: 'ASMR',

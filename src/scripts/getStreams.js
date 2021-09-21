@@ -1,13 +1,20 @@
+import config from '../config'
+
 const getStreams = async () => {
   const game = config.games.shift()
   config.games.push(game)
+
+  const rules = {
+    ...config.game,
+    ...game,
+  }
 
   const currTimestamp = timestamp()
 
   const query = _.get(data, `pagination['${game.id}']`, {
     game_id: game.id,
-    language: config.language,
-    first: config.streamPerPage,
+    language: rules.language,
+    first: rules.streamPerPage,
   })
 
   if (!query.after && data.lockGame[game.id] > currTimestamp) {
@@ -16,7 +23,7 @@ const getStreams = async () => {
     return false
   }
 
-  console.debug(`\nGet ${config.streamPerPage} [ ${game.name} ] streams`)
+  console.debug(`\nGet ${rules.streamPerPage} [ ${game.name} ] streams`)
 
   const res = await superagent
     .get('https://api.twitch.tv/helix/streams')
@@ -33,7 +40,7 @@ const getStreams = async () => {
   if (!after || streams.length === 0) {
     console.debug(`\nLocking Game ${game.name} for 1 hour`)
     delete data.pagination[game.id]
-    data.lockGame[game.id] = currTimestamp + config.lockGameUntil
+    data.lockGame[game.id] = currTimestamp + rules.lockGameUntil
   }
 
   if (after) {
@@ -44,14 +51,14 @@ const getStreams = async () => {
   }
 
   _.forEach(streams, stream => {
-    const { type, user_name, viewer_count } = stream
-    const channel = formatChannel(user_name)
-    console.debug(`- (${type}) ${channel}, ${viewer_count} viewers`)
+    const { type, user_login, viewer_count, language } = stream
+    const channel = formatChannel(user_login)
+    console.debug(`- ${language.toUpperCase()} (${type}) ${channel}, ${viewer_count} viewers`)
 
     const isJoined = _.get(data, `joined.${channel}`, null)
     if (type === 'live'
-        && viewer_count >= config.viewerMinimumEnter
-        && viewer_count <= config.viewerMaximumEnter
+        && viewer_count >= rules.viewerMinimumEnter
+        && viewer_count <= rules.viewerMaximumEnter
         && !isJoined) {
       data.actions.push({
         type: 'tmi',

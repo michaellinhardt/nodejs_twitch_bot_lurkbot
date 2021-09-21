@@ -5,7 +5,7 @@ const tmiAction = async () => {
 
   const currTimestamp = timestamp()
 
-  console.debug(`\nTmi Action: ${action.action}, Channel: ${action.channel}`)
+  // console.debug(`\nTmi Action: ${action.action}, Channel: ${action.channel}`)
 
   const actionKey = `${action.action}_${action.channel}`
 

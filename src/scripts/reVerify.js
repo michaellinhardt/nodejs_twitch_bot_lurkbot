@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import config from '../config'
 
 const reVerify = async (reVerifyChannel) => {
 
@@ -24,15 +25,18 @@ const reVerify = async (reVerifyChannel) => {
   const nextVerify = timestamp() + config.reVerifyViewerEvery
 
   _.forEach(streams, stream => {
-    const { type, user_name, viewer_count } = stream
-    const channel = formatChannel(user_name)
-    console.debug(`- (${type}) ${channel}, ${viewer_count} viewers`)
+    const { type, user_login, viewer_count, game_id, language } = stream
+
+    const viewerMinimumLeave = _.get(config, `games['${game_id}'].viewerMinimumLeave`, config.viewerMinimumLeave)
+    const viewerMaximumLeave = _.get(config, `games['${game_id}'].viewerMaximumLeave`, config.viewerMaximumLeave)
+
+    const channel = formatChannel(user_login)
 
     const isJoined = _.get(data, `joined.${channel}`, null)
     if (isJoined && (type !== 'live'
-        || viewer_count < config.viewerMinimumLeave
-        || viewer_count > config.viewerMaximumLeave)) {
-      console.debug(`-- ${channel}: part`)
+        || viewer_count < viewerMinimumLeave
+        || viewer_count > viewerMaximumLeave)) {
+      console.debug(`-- ${language.toUpperCase()} (viewers) ${channel}: part, ${viewer_count} viewers`)
       data.actions.push({
         type: 'tmi',
         action: 'part',
@@ -40,15 +44,16 @@ const reVerify = async (reVerifyChannel) => {
       })
       data.joined[channel] = nextVerify * 999
     }
+    console.debug(`-- ${language.toUpperCase()} (live) ${channel}: stay, ${viewer_count} viewers`)
   })
 
   _.forEach(reVerifyChannel, channel => {
     const formatedChannel = formatChannel(channel)
-    const isStream = streams.find(s => formatChannel(s.user_name) === formatedChannel)
+    const isStream = streams.find(s => formatChannel(s.user_login) === formatedChannel)
     if (!isStream) {
       data.joined[formatedChannel] = nextVerify
-      console.debug(`- (offline) ${formatedChannel}, 0 viewers`)
-      console.debug(`-- ${formatedChannel}: part`)
+      console.debug(`-- (offline) ${formatedChannel}: part`)
+      // console.debug(`-- ${formatedChannel}: part`)
       data.actions.push({
         type: 'tmi',
         action: 'part',
