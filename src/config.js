@@ -13,8 +13,8 @@ const config = {
 
   loopEvery: 1000,
 
-  apiCallEvery: 1,
-  tmiActionEvery: 1,
+  apiCallEvery: 4,
+  tmiActionEvery: 3,
 
   reVerifyViewerEvery: 60 * 30,
   reVerifyViewerMinimumChannel: 100,
@@ -27,9 +27,9 @@ const config = {
     streamPerPage: 100,
 
     viewerMinimumEnter: 6,
-    viewerMaximumEnter: 50,
+    viewerMaximumEnter: 40,
     viewerMinimumLeave: 3,
-    viewerMaximumLeave: 80,
+    viewerMaximumLeave: 60,
 
     lockGameUntil: 60,
 

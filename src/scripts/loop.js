@@ -26,10 +26,8 @@ const loop = async () => {
         }
       })
       data.nextForceLeaveCheck = currTimestamp + config.checkForceLeaveEvery
-      if (totalForceLeave > 0) {
-        console.debug(`\n${totalForceLeave} Force leave channel`)
-        return displayStats()
-      }
+      console.debug(`\n${totalForceLeave} Force leave channel`)
+      return displayStats()
     }
 
     // reverify

@@ -43,12 +43,6 @@ global.displayStats = () => {
       totalChannelLock += 1
     }
   })
-  let totalForceLeave = 0
-  _.forEach(data.forceLeave, (leaveWhen) => {
-    if (leaveWhen > currTimestamp) {
-      totalForceLeave += 1
-    }
-  })
   let totalLockGame = 0
   _.forEach(data.lockGame, (lockUntil) => {
     if (lockUntil > currTimestamp) {
@@ -56,7 +50,7 @@ global.displayStats = () => {
     }
   })
   console.debug(`${data.totalCurr} active \t\t ${data.totalJoin} Joineedd \t\t ${data.totalPart} Leaved`)
-  console.debug(`${totalForceLeave} leave plan \t\t ${totalChannelLock} locked \t\t ${totalLockGame} game lock`)
+  console.debug(`${data.forceLeavelength} leave plan \t\t ${totalChannelLock} locked \t\t ${totalLockGame} game lock`)
   console.debug(`${data.totalLeaveForce} forceLeaved \t\t ${data.totalLeaveViewers} viewLeaved \t\t ${data.totalLeaveOffline} offLeaved`)
 }
 

@@ -57,11 +57,17 @@ const getStreams = async () => {
 
   let totalPriority = 0
   let totalNormal = 0
+  const nextVerify = timestamp() + config.reVerifyViewerEvery
+
+  let totalLeaveViewers = 0
 
   _.forEach(streams, stream => {
-    const { type, user_login, viewer_count } = stream
+    const { type, user_login, viewer_count, game_id } = stream
     const channel = formatChannel(user_login)
     // console.debug(`- ${language.toUpperCase()} (${type}) ${channel}, ${viewer_count} viewers`)
+
+    const viewerMinimumLeave = _.get(config, `games['${game_id}'].viewerMinimumLeave`, config.viewerMinimumLeave)
+    const viewerMaximumLeave = _.get(config, `games['${game_id}'].viewerMaximumLeave`, config.viewerMaximumLeave)
 
     const isJoined = _.get(data, `joined.${channel}`, null)
     if (type === 'live'
@@ -82,15 +88,32 @@ const getStreams = async () => {
         data.actions.push(action)
       }
 
+    } else if (isJoined && (type !== 'live'
+    || viewer_count < viewerMinimumLeave
+    || viewer_count > viewerMaximumLeave)) {
+
+      totalLeaveViewers += 1
+      data.totalLeaveViewers += 1
+      data.actions.unshift({
+        type: 'tmi',
+        action: 'part',
+        channel,
+      })
+      data.joined[channel] = nextVerify * 999
+
     }
   })
 
   if (totalPriority > 0) {
     console.debug(`\nGet ${rules.streamPerPage} [ ${game.name} ] ${totalPriority} priority join`)
-  } else if (totalPriority > 0) {
+  } else if (totalNormal > 0) {
     console.debug(`\nGet ${rules.streamPerPage} [ ${game.name} ] ${totalNormal} normal join`)
   } else {
     console.debug(`\nGet ${rules.streamPerPage} [ ${game.name} ] 0 join`)
+  }
+
+  if (totalLeaveViewers > 0) {
+    console.debug(`${totalLeaveViewers} leave, low viewers`)
   }
 }
 
