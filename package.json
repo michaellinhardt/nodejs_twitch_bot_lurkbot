@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon src/index.js --exec babel-node",
+    "script": "nodemon src/script.js --exec babel-node",
     "lint": "./node_modules/eslint/bin/eslint.js src"
   },
   "author": "Michael Linhardt",

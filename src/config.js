@@ -24,7 +24,7 @@ const config = {
   checkForceLeaveEvery: 60 * 10,
 
   game: {
-    streamPerPage: 100,
+    streamPerPage: 10,
 
     viewerMinimumEnter: 6,
     viewerMaximumEnter: 50,
@@ -56,6 +56,7 @@ const config = {
       viewerMinimumLeave: 3,
       viewerMaximumLeave: 100,
       lockGameUntil: 60 * 30,
+      allAtOnce: true,
     },
     {
       name: 'Genshin Impact',
@@ -65,57 +66,68 @@ const config = {
       viewerMinimumLeave: 3,
       viewerMaximumLeave: 100,
       lockGameUntil: 60 * 30,
+      allAtOnce: true,
     },
     {
       name: 'New World',
       id: '493597',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'World of Warcraft',
       id: '18122',
       lockGameUntil: 60 * 30,
+      allAtOnce: true,
     },
     {
       name: 'Final Fantasy XIV Online',
       id: '24241',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'Diablo II',
       id: '1041',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'Diablo II: Resurrected',
       id: '1788326126',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'Diablo III',
       id: '313558',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'Black Desert Online',
       id: '386821',
       language: 'en',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'God of War',
       id: '6369',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'Dark Souls III',
       id: '490292',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'Monster Hunter: World',
       id: '497467',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'Just Chatting',
@@ -127,26 +139,31 @@ const config = {
       name: 'Path of Exile',
       id: '29307',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'The Elder Scrolls Online',
       id: '65654',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'Dungeons & Dragons',
       id: '509577',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'The Elder Scrolls V: Skyrim',
       id: '30028',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'Guild Wars 2',
       id: '19357',
       lockGameUntil: 60 * 90,
+      allAtOnce: true,
     },
     {
       name: 'Grand Theft Auto V',

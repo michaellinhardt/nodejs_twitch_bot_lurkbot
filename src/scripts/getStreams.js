@@ -2,7 +2,6 @@ import config from '../config'
 
 const getStreams = async () => {
   const game = config.games.shift()
-  config.games.push(game)
 
   const rules = {
     ...config.game,
@@ -21,6 +20,12 @@ const getStreams = async () => {
     console.debug(`\nGame ${game.name} is locked..`)
     data.nextApiCall = currTimestamp + 3
     return false
+  }
+
+  if (rules.allAtOnce === true) {
+    config.games.unshift(game)
+  } else {
+    config.games.push(game)
   }
 
   console.debug(`\nGet ${rules.streamPerPage} [ ${game.name} ] streams`)
