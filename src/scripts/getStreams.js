@@ -24,6 +24,7 @@ const getStreams = async () => {
 
   if (rules.allAtOnce === true) {
     rules.streamPerPage = 100
+    query.first = 100
     config.games.unshift(game)
   } else {
     config.games.push(game)
