@@ -1,6 +1,7 @@
 {
     "globals": {
       "data": true,
+      "displayStats": true,
       "formatChannel": true,
       "chatbot": true,
       "timestamp": true,

@@ -11,6 +11,7 @@ const loop = async () => {
 
     // force leave
     if (data.nextForceLeaveCheck <= currTimestamp) {
+      let totalForceLeave = 0
       _.forEach(data.forceLeave, (whenForceLeave, channel) => {
         if (whenForceLeave <= currTimestamp && data.joined[channel]) {
           data.joined[channel] = currTimestamp + (config.reVerifyViewerEvery * 999)
@@ -20,9 +21,15 @@ const loop = async () => {
             channel,
           })
           delete data.forceLeave[channel]
+          totalForceLeave += 1
+          data.totalLeaveForce += 1
         }
       })
       data.nextForceLeaveCheck = currTimestamp + config.checkForceLeaveEvery
+      if (totalForceLeave > 0) {
+        console.debug(`\n${totalForceLeave} Force leave channel`)
+        return displayStats()
+      }
     }
 
     // reverify
@@ -39,6 +46,8 @@ const loop = async () => {
       && data.nextApiCall <= currTimestamp) {
       await reVerify(reVerifyChannel)
       data.nextApiCall = currTimestamp + config.apiCallEvery
+      console.debug(`${reVerifyChannel.length} channel has been re-verified`)
+      displayStats()
       return true
     }
 
@@ -47,6 +56,7 @@ const loop = async () => {
     && data.nextApiCall <= currTimestamp) {
       await getStreams()
       data.nextApiCall = currTimestamp + config.apiCallEvery
+      displayStats()
       return true
     }
 

@@ -23,12 +23,11 @@ const getStreams = async () => {
   }
 
   if (rules.allAtOnce === true) {
+    rules.streamPerPage = 100
     config.games.unshift(game)
   } else {
     config.games.push(game)
   }
-
-  console.debug(`\nGet ${rules.streamPerPage} [ ${game.name} ] streams`)
 
   const res = await superagent
     .get('https://api.twitch.tv/helix/streams')
@@ -55,10 +54,13 @@ const getStreams = async () => {
     })
   }
 
+  let totalPriority = 0
+  let totalNormal = 0
+
   _.forEach(streams, stream => {
-    const { type, user_login, viewer_count, language } = stream
+    const { type, user_login, viewer_count } = stream
     const channel = formatChannel(user_login)
-    console.debug(`- ${language.toUpperCase()} (${type}) ${channel}, ${viewer_count} viewers`)
+    // console.debug(`- ${language.toUpperCase()} (${type}) ${channel}, ${viewer_count} viewers`)
 
     const isJoined = _.get(data, `joined.${channel}`, null)
     if (type === 'live'
@@ -71,13 +73,24 @@ const getStreams = async () => {
         action: 'join',
         channel,
       }
-
       if (rules.priorityJoin === true) {
+        totalPriority += 1
         data.actions.unshift(action)
-      } else { data.actions.push(action) }
+      } else {
+        totalNormal += 1
+        data.actions.push(action)
+      }
 
     }
   })
+
+  if (totalPriority > 0) {
+    console.debug(`\nGet ${rules.streamPerPage} [ ${game.name} ] ${totalPriority} priority join`)
+  } else if (totalPriority > 0) {
+    console.debug(`\nGet ${rules.streamPerPage} [ ${game.name} ] ${totalNormal} normal join`)
+  } else {
+    console.debug(`\nGet ${rules.streamPerPage} [ ${game.name} ] 0 join`)
+  }
 }
 
 export default {

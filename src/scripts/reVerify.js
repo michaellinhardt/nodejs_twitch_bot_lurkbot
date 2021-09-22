@@ -24,8 +24,14 @@ const reVerify = async (reVerifyChannel) => {
 
   const nextVerify = timestamp() + config.reVerifyViewerEvery
 
+  const total = {
+    partViewers: 0,
+    stayViewers: 0,
+    partOffline: 0,
+  }
+
   _.forEach(streams, stream => {
-    const { type, user_login, viewer_count, game_id, language } = stream
+    const { type, user_login, viewer_count, game_id } = stream
 
     const viewerMinimumLeave = _.get(config, `games['${game_id}'].viewerMinimumLeave`, config.viewerMinimumLeave)
     const viewerMaximumLeave = _.get(config, `games['${game_id}'].viewerMaximumLeave`, config.viewerMaximumLeave)
@@ -36,15 +42,17 @@ const reVerify = async (reVerifyChannel) => {
     if (isJoined && (type !== 'live'
         || viewer_count < viewerMinimumLeave
         || viewer_count > viewerMaximumLeave)) {
-      console.debug(`-- ${language.toUpperCase()} (viewers) ${channel}: part, ${viewer_count} viewers`)
+
+      // console.debug(`-- ${language.toUpperCase()} (viewers) ${channel}: part, ${viewer_count} viewers`)
+      total.partViewers += 1
+      data.totalLeaveViewers += 1
       data.actions.unshift({
         type: 'tmi',
         action: 'part',
         channel,
       })
       data.joined[channel] = nextVerify * 999
-    }
-    console.debug(`-- ${language.toUpperCase()} (live) ${channel}: stay, ${viewer_count} viewers`)
+    } else { total.stayViewers += 1 }
   })
 
   _.forEach(reVerifyChannel, channel => {
@@ -52,8 +60,9 @@ const reVerify = async (reVerifyChannel) => {
     const isStream = streams.find(s => formatChannel(s.user_login) === formatedChannel)
     if (!isStream) {
       data.joined[formatedChannel] = nextVerify * 999
-      console.debug(`-- (offline) ${formatedChannel}: part`)
-      // console.debug(`-- ${formatedChannel}: part`)
+      // console.debug(`-- (offline) ${formatedChannel}: part`)
+      total.partOffline += 1
+      data.totalLeaveOffline += 1
       data.actions.unshift({
         type: 'tmi',
         action: 'part',
@@ -61,6 +70,8 @@ const reVerify = async (reVerifyChannel) => {
       })
     }
   })
+
+  console.debug(`${total.stayViewers} stay == ${total.partViewers} part viewers == ${total.partOffline} part offline`)
 }
 
 export default {
