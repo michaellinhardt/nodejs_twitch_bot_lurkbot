@@ -65,11 +65,17 @@ const getStreams = async () => {
         && viewer_count >= rules.viewerMinimumEnter
         && viewer_count <= rules.viewerMaximumEnter
         && !isJoined) {
-      data.actions.push({
+
+      const action = {
         type: 'tmi',
         action: 'join',
         channel,
-      })
+      }
+
+      if (rules.priorityJoin === true) {
+        data.actions.unshift(action)
+      } else { data.actions.push(action) }
+
     }
   })
 }

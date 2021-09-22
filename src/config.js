@@ -57,6 +57,7 @@ const config = {
       viewerMaximumLeave: 100,
       lockGameUntil: 60 * 30,
       allAtOnce: true,
+      priorityJoin: true,
     },
     {
       name: 'Genshin Impact',
@@ -67,6 +68,7 @@ const config = {
       viewerMaximumLeave: 100,
       lockGameUntil: 60 * 30,
       allAtOnce: true,
+      priorityJoin: true,
     },
     {
       name: 'New World',
