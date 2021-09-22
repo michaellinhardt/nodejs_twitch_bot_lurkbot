@@ -50,7 +50,7 @@ global.displayStats = () => {
     }
   })
   console.debug(`${data.totalCurr} active \t\t ${data.totalJoin} Joineedd \t\t ${data.totalPart} Leaved`)
-  console.debug(`${data.forceLeavelength} leave plan \t\t ${totalChannelLock} locked \t\t ${totalLockGame} game lock`)
+  console.debug(`${data.forceLeave.length} leave plan \t\t ${totalChannelLock} locked \t\t ${totalLockGame} game lock`)
   console.debug(`${data.totalLeaveForce} forceLeaved \t\t ${data.totalLeaveViewers} viewLeaved \t\t ${data.totalLeaveOffline} offLeaved`)
 }
 
