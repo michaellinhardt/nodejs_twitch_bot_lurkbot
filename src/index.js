@@ -93,8 +93,9 @@ const start = async () => {
       data.total -= 1
       const channelFormated = formatChannel(channel)
       // console.debug(`Part Validate: ${channelFormated}, [${data.total} joined]`)
-      data.joined[channelFormated] = undefined
       data.channelLock[channelFormated] = timestamp() + config.lockJoinAfterLeave
+      delete data.joined[channelFormated]
+      delete data.forceLeave[channelFormated]
     }
   })
 
