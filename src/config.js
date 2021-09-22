@@ -14,7 +14,7 @@ const config = {
   loopEvery: 1000,
 
   apiCallEvery: 4,
-  tmiActionEvery: 3,
+  tmiActionEvery: 2,
 
   reVerifyViewerEvery: 60 * 5,
   reVerifyViewerMinimumChannel: 90,
@@ -24,7 +24,7 @@ const config = {
   checkForceLeaveEvery: 60 * 10,
 
   game: {
-    streamPerPage: 10,
+    streamPerPage: 30,
 
     viewerMinimumEnter: 6,
     viewerMaximumEnter: 50,

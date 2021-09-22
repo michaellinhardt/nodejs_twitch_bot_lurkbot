@@ -37,7 +37,7 @@ const reVerify = async (reVerifyChannel) => {
         || viewer_count < viewerMinimumLeave
         || viewer_count > viewerMaximumLeave)) {
       console.debug(`-- ${language.toUpperCase()} (viewers) ${channel}: part, ${viewer_count} viewers`)
-      data.actions.push({
+      data.actions.unshift({
         type: 'tmi',
         action: 'part',
         channel,
@@ -54,7 +54,7 @@ const reVerify = async (reVerifyChannel) => {
       data.joined[formatedChannel] = nextVerify * 999
       console.debug(`-- (offline) ${formatedChannel}: part`)
       // console.debug(`-- ${formatedChannel}: part`)
-      data.actions.push({
+      data.actions.unshift({
         type: 'tmi',
         action: 'part',
         channel: formatedChannel,

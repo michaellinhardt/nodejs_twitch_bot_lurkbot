@@ -33,7 +33,7 @@ const start = async () => {
 
 const run = async () => {
   const query = {
-    login: 'teazmod',
+    login: 'teazwar',
   }
 
   const res = await superagent

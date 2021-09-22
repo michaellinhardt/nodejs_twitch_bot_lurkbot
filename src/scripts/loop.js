@@ -14,7 +14,7 @@ const loop = async () => {
       _.forEach(data.forceLeave, (whenForceLeave, channel) => {
         if (whenForceLeave <= currTimestamp && data.joined[channel]) {
           data.joined[channel] = currTimestamp + (config.reVerifyViewerEvery * 999)
-          data.actions.push({
+          data.actions.unshift({
             type: 'tmi',
             action: 'part',
             channel,
