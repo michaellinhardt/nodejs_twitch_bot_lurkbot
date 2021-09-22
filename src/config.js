@@ -13,8 +13,8 @@ const config = {
 
   loopEvery: 1000,
 
-  apiCallEvery: 3,
-  tmiActionEvery: 2,
+  apiCallEvery: 4,
+  tmiActionEvery: 3,
 
   reVerifyViewerEvery: 60 * 5,
   reVerifyViewerMinimumChannel: 90,
