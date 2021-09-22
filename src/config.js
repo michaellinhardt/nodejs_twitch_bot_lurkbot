@@ -24,7 +24,7 @@ const config = {
   checkForceLeaveEvery: 60 * 10,
 
   game: {
-    streamPerPage: 30,
+    streamPerPage: 20,
 
     viewerMinimumEnter: 6,
     viewerMaximumEnter: 50,
