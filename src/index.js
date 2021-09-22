@@ -44,7 +44,11 @@ global.displayStats = () => {
     }
   })
   let totalForceLeave = 0
-  _.forEach(data.forceLeave, () => {
+  let totalForceLeaveActive = 0
+  _.forEach(data.forceLeave, (whenLeave) => {
+    if (whenLeave > currTimestamp) {
+      totalForceLeaveActive += 1
+    }
     totalForceLeave += 1
   })
   let totalLockGame = 0
@@ -53,9 +57,9 @@ global.displayStats = () => {
       totalLockGame += 1
     }
   })
-  console.debug(`${data.totalCurr} active \t\t ${data.totalJoin} Joineedd \t\t ${data.totalPart} Leaved`)
-  console.debug(`${totalForceLeave} leave plan \t\t ${totalChannelLock} locked \t\t ${totalLockGame} game lock`)
-  console.debug(`${data.totalLeaveForce} forceLeaved \t\t ${data.totalLeaveViewers} viewLeaved \t\t ${data.totalLeaveOffline} offLeaved`)
+  console.debug(`${data.totalCurr} active \t\t\t ${data.totalJoin} Joineedd \t\t\t ${data.totalPart} Leaved`)
+  console.debug(`${totalForceLeaveActive}/${totalForceLeave} leavePlan \t\t\t ${totalChannelLock} locked \t\t\t ${totalLockGame} game lock`)
+  console.debug(`${data.totalLeaveForce} forceLeaved \t\t\t ${data.totalLeaveViewers} viewLeaved \t\t\t ${data.totalLeaveOffline} offLeaved`)
 }
 
 const { tmiOpts } = config
