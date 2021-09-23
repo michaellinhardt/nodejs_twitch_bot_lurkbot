@@ -10,8 +10,9 @@ const config = {
   apiCallEvery: 3,
   tmiActionEvery: 4,
 
-  reVerifyViewerEvery: 60 * 1,
-  reVerifyViewerMinimumChannel: 100,
+  reVerifyViewerEvery: 60 * 5,
+  reVerifyViewerOptimalChannel: 100,
+  reVerifyViewerMinimumChannel: 10,
 
   // forceLeaveAfter: 60 * 1,
   // lockJoinAfterLeave: 60 * 1,

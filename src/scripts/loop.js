@@ -60,9 +60,9 @@ const loop = async () => {
           if (reVerifyChannel.length === 100) { return false }
         })
 
-        liveOutput(`${reVerifyChannel.length} / ${config.reVerifyViewerMinimumChannel} channel need to be re-verified`)
+        liveOutput(`${reVerifyChannel.length} / ${config.reVerifyViewerOptimalChannel} channel need to be re-verified`)
 
-        if (reVerifyChannel.length >= config.reVerifyViewerMinimumChannel) {
+        if (reVerifyChannel.length >= config.reVerifyViewerOptimalChannel) {
           await reVerify(reVerifyChannel)
           data.nextApiCall = currTimestamp + config.apiCallEvery
           return true
@@ -102,8 +102,7 @@ const loop = async () => {
 
       liveOutput(`${reVerifyChannel.length} / ${config.reVerifyViewerMinimumChannel} channel need to be re-verified`)
 
-      if (reVerifyChannel.length > 0) {
-        output(`${reVerifyChannel.length} / ${config.reVerifyViewerMinimumChannel} channel need to be re-verified`)
+      if (reVerifyChannel.length >= config.reVerifyViewerMinimumChannel) {
         await reVerify(reVerifyChannel)
         data.nextApiCall = currTimestamp + config.apiCallEvery
         return true
