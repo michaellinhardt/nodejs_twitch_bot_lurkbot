@@ -11,12 +11,12 @@ const stalk = async () => {
     .set('Authorization', `Bearer ${config.oauth}`)
     .set('Accept', 'application/json')
     .catch((err) => {
-      console.debug(err, err.response, err.message)
+      output(err, err.response, err.message)
       data.stream = undefined
     })
 
   data.stream = _.get(res, 'body.data[0]', undefined)
-  console.debug(data.stream)
+  output(data.stream)
 }
 
 export default {

@@ -1,11 +1,15 @@
 import _ from 'lodash'
 import config from '../config'
+const { addAction } = require('./addAction').default
 
 const reVerify = async (reVerifyChannel) => {
 
-  console.debug(`\nRe Verify ${reVerifyChannel.length} streams`)
+  output(`Re Verify ${reVerifyChannel.length} streams`)
   const queryString = reVerifyChannel.join('&user_login=')
   const url = `https://api.twitch.tv/helix/streams?user_login=${queryString}`
+  const currTimestamp = timestamp()
+  const viewerMinimumLeave = config.viewerMinimumLeave
+  const viewerMaximumLeave = config.viewerMaximumLeave
 
   const res = await superagent
     .get(url)
@@ -13,16 +17,16 @@ const reVerify = async (reVerifyChannel) => {
     .set('Authorization', `Bearer ${config.oauth}`)
     .set('Accept', 'application/json')
     .catch((err) => {
-      console.debug(err, err.response, err.message)
-      const nextVerify = timestamp() + config.reVerifyViewerEvery
-      _.forEach(data.joined, (value, channel) => {
-        data.joined[channel.replace('#', '')] = nextVerify * 3
+      output(err, err.response, err.message)
+      _.forEach(data.channels, dataChannel => {
+        _.get(dataChannel, 'reVerify', currTimestamp + (60 * 5))
       })
+      return false
     })
 
   const streams = _.get(res, 'body.data', [])
 
-  const nextVerify = timestamp() + config.reVerifyViewerEvery
+  if (streams.length === 0) { return false }
 
   const total = {
     partViewers: 0,
@@ -31,47 +35,34 @@ const reVerify = async (reVerifyChannel) => {
   }
 
   _.forEach(streams, stream => {
-    const { type, user_login, viewer_count, game_id } = stream
+    const { type, user_login, viewer_count } = stream
 
-    const viewerMinimumLeave = _.get(config, `games['${game_id}'].viewerMinimumLeave`, config.viewerMinimumLeave)
-    const viewerMaximumLeave = _.get(config, `games['${game_id}'].viewerMaximumLeave`, config.viewerMaximumLeave)
+    const channel = channelName(user_login)
 
-    const channel = formatChannel(user_login)
-
-    const isJoined = _.get(data, `joined.${channel}`, null)
+    const isJoined = _.get(data, `channels.${channel}.status`, false)
     if (isJoined && (type !== 'live'
         || viewer_count < viewerMinimumLeave
         || viewer_count > viewerMaximumLeave)) {
 
-      // console.debug(`-- ${language.toUpperCase()} (viewers) ${channel}: part, ${viewer_count} viewers`)
       total.partViewers += 1
       data.totalLeaveViewers += 1
-      data.actions.unshift({
-        type: 'tmi',
-        action: 'part',
-        channel,
-      })
-      data.joined[channel] = nextVerify * 999
+      addAction('part', channel)
+
     } else { total.stayViewers += 1 }
   })
 
   _.forEach(reVerifyChannel, channel => {
-    const formatedChannel = formatChannel(channel)
-    const isStream = streams.find(s => formatChannel(s.user_login) === formatedChannel)
+    const formatedChannel = channelName(channel)
+    const isStream = streams.find(s => channelName(s.user_login) === formatedChannel)
     if (!isStream) {
-      data.joined[formatedChannel] = nextVerify * 999
-      // console.debug(`-- (offline) ${formatedChannel}: part`)
+      addAction('part', channel)
       total.partOffline += 1
       data.totalLeaveOffline += 1
-      data.actions.unshift({
-        type: 'tmi',
-        action: 'part',
-        channel: formatedChannel,
-      })
     }
   })
 
-  console.debug(`${total.stayViewers} stay == ${total.partViewers} part viewers == ${total.partOffline} part offline`)
+  output(
+    `${total.stayViewers} stay == ${total.partViewers} part viewers == ${total.partOffline} part offline`)
 }
 
 export default {

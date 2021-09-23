@@ -1,33 +1,11 @@
 import config from '../config'
+const { addAction } = require('./addAction').default
 
 const getStreams = async () => {
-  const game = config.games.shift()
-
-  const rules = {
-    ...config.game,
-    ...game,
-  }
-
-  const currTimestamp = timestamp()
-
-  const query = _.get(data, `pagination['${game.id}']`, {
-    game_id: game.id,
-    language: rules.language,
-    first: rules.streamPerPage,
-  })
-
-  if (!query.after && data.lockGame[game.id] > currTimestamp) {
-    console.debug(`\nGame ${game.name} is locked..`)
-    data.nextApiCall = currTimestamp + 3
-    return false
-  }
-
-  if (rules.allAtOnce === true) {
-    rules.streamPerPage = 100
-    query.first = 100
-    config.games.unshift(game)
-  } else {
-    config.games.push(game)
+  const query = {
+    after: _.get(data, 'cursor', undefined),
+    language: config.language,
+    first: config.streamPerPage,
   }
 
   const res = await superagent
@@ -36,57 +14,39 @@ const getStreams = async () => {
     .set('Client-ID', config.clientId)
     .set('Authorization', `Bearer ${config.oauth}`)
     .set('Accept', 'application/json')
-    .catch((err) => { console.debug(err, err.response, err.message) })
+    .catch((err) => {
+      output(err, err.response, err.message)
+      return false
+    })
 
   const streams = _.get(res, 'body.data', [])
+  if (streams.length === 0) { return false }
 
   const after = _.get(res, 'body.pagination.cursor', undefined)
+  _.set(data, 'cursor', after)
 
-  if (!after || streams.length === 0) {
-    console.debug(`\nLocking Game ${game.name} for 1 hour`)
-    delete data.pagination[game.id]
-    data.lockGame[game.id] = currTimestamp + rules.lockGameUntil
-  }
-
-  if (after) {
-    _.set(data, `pagination['${game.id}']`, {
-      ...query,
-      after,
-    })
-  }
-
-  let totalPriority = 0
-  let totalNormal = 0
-  const nextVerify = timestamp() + config.reVerifyViewerEvery
-
+  let serverJoined = 0
   let totalLeaveViewers = 0
+
+  const nextVerify = timestamp() + config.reVerifyViewerEvery
+  const viewerMinimumLeave = config.viewerMinimumLeave
+  const viewerMaximumLeave = config.viewerMaximumLeave
+  let highestViewer = 0
 
   _.forEach(streams, stream => {
     const { type, user_login, viewer_count, game_id } = stream
-    const channel = formatChannel(user_login)
-    // console.debug(`- ${language.toUpperCase()} (${type}) ${channel}, ${viewer_count} viewers`)
+    if (viewer_count > highestViewer) { highestViewer = viewer_count }
+    const channel = channelName(user_login)
 
-    const viewerMinimumLeave = _.get(config, `games['${game_id}'].viewerMinimumLeave`, config.viewerMinimumLeave)
-    const viewerMaximumLeave = _.get(config, `games['${game_id}'].viewerMaximumLeave`, config.viewerMaximumLeave)
+    const isJoined = _.get(data, `channels.${channel}.status`, false)
+    if (!isJoined
+        && game_id !== '490100' // lost ark
+        && type === 'live'
+        && viewer_count >= config.viewerMinimumEnter
+        && viewer_count <= config.viewerMaximumEnter) {
 
-    const isJoined = _.get(data, `joined.${channel}`, null)
-    if (type === 'live'
-        && viewer_count >= rules.viewerMinimumEnter
-        && viewer_count <= rules.viewerMaximumEnter
-        && !isJoined) {
-
-      const action = {
-        type: 'tmi',
-        action: 'join',
-        channel,
-      }
-      if (rules.priorityJoin === true) {
-        totalPriority += 1
-        data.actions.unshift(action)
-      } else {
-        totalNormal += 1
-        data.actions.push(action)
-      }
+      serverJoined += 1
+      addAction('join', channel)
 
     } else if (isJoined && (type !== 'live'
     || viewer_count < viewerMinimumLeave
@@ -94,26 +54,22 @@ const getStreams = async () => {
 
       totalLeaveViewers += 1
       data.totalLeaveViewers += 1
-      data.actions.unshift({
-        type: 'tmi',
-        action: 'part',
-        channel,
-      })
-      data.joined[channel] = nextVerify * 999
+      addAction('part', channel)
 
+    } else if (isJoined) {
+      _.set(data, `channels.${channel}.reVerify`, nextVerify)
     }
   })
 
-  if (totalPriority > 0) {
-    console.debug(`\nGet ${rules.streamPerPage} [ ${game.name} ] ${totalPriority} priority join`)
-  } else if (totalNormal > 0) {
-    console.debug(`\nGet ${rules.streamPerPage} [ ${game.name} ] ${totalNormal} normal join`)
-  } else {
-    console.debug(`\nGet ${rules.streamPerPage} [ ${game.name} ] 0 join`)
-  }
+  output(`Get ${config.streamPerPage} streams, ${serverJoined} join`)
 
   if (totalLeaveViewers > 0) {
-    console.debug(`${totalLeaveViewers} leave, low viewers`)
+    output(`${totalLeaveViewers} leave for low viewers`)
+  }
+
+  if (highestViewer < config.viewerMinimumEnter) {
+    _.set(data, 'cursor', undefined)
+    output('Reached too low viewer count on the list, restart from top')
   }
 }
 

@@ -1,8 +1,11 @@
 {
     "globals": {
       "data": true,
+      "sleep": true,
+      "output": true,
+      "liveOutput": true,
       "displayStats": true,
-      "formatChannel": true,
+      "channelName": true,
       "chatbot": true,
       "timestamp": true,
       "_": true,
