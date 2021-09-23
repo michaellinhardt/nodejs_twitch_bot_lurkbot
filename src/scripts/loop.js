@@ -31,7 +31,7 @@ const loop = async () => {
     if (data.nextApiCall <= currTimestamp) {
 
       // Actions list empty
-      if (data.actions.length < 4) {
+      if (data.actions.length === 0) {
         liveOutput('Loop called getStreams()')
         await getStreams()
         liveOutput('getStreams() is over')
@@ -105,6 +105,15 @@ const loop = async () => {
 
       if (reVerifyChannel.length > 0) {
         await reVerify(reVerifyChannel)
+        data.nextApiCall = currTimestamp + config.apiCallEvery
+        return true
+      }
+
+      // Actions list empty
+      if (data.actions.length < 10) {
+        liveOutput('Loop called getStreams()')
+        await getStreams()
+        liveOutput('getStreams() is over')
         data.nextApiCall = currTimestamp + config.apiCallEvery
         return true
       }
