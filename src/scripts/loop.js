@@ -99,7 +99,7 @@ const loop = async () => {
         if (reVerifyChannel2.length === 100) { return false }
       })
 
-      output(`${reVerifyChannel2.length} / ${config.reVerifyViewerMinimumChannel} channel need to be re-verified`)
+      liveOutput(`${reVerifyChannel2.length} / ${config.reVerifyViewerMinimumChannel} channel need to be re-verified`)
 
       if (reVerifyChannel2.length >= config.reVerifyViewerMinimumChannel) {
         await reVerify(reVerifyChannel2)
