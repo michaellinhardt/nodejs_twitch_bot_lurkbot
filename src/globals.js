@@ -20,6 +20,7 @@ global.data = {
   totalLeaveOffline: 0,
 
   lastLiveOutput: '',
+  lastGetStreamJoined: 0,
 
   actionOnceEvery: {},
 

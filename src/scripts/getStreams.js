@@ -8,6 +8,10 @@ const getStreams = async () => {
     first: config.streamPerPage,
   }
 
+  if (data.lastGetStreamJoined === 0) {
+    query.first = 100
+  }
+
   const res = await superagent
     .get('https://api.twitch.tv/helix/streams')
     .query(query)
@@ -61,7 +65,9 @@ const getStreams = async () => {
     }
   })
 
-  output(`Get ${config.streamPerPage} streams, ${serverJoined} join`)
+  data.lastGetStreamJoined = serverJoined
+
+  output(`Get ${query.first} streams, ${serverJoined} join`)
 
   if (totalLeaveViewers > 0) {
     output(`${totalLeaveViewers} leave for low viewers`)

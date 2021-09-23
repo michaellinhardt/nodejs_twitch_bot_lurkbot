@@ -7,32 +7,32 @@ const config = {
 
   loopEvery: 1000,
 
-  apiCallEvery: 3,
-  tmiActionEvery: 4,
+  apiCallEvery: 2,
+  tmiActionEvery: 3,
 
-  reVerifyViewerEvery: 60 * 5,
+  reVerifyViewerEvery: 60 * 15,
   reVerifyViewerOptimalChannel: 100,
-  reVerifyViewerMinimumChannel: 10,
+  reVerifyViewerMinimumChannel: 20,
 
   // forceLeaveAfter: 60 * 1,
   // lockJoinAfterLeave: 60 * 1,
   // checkForceLeaveEvery: 60 * 1,
-  forceLeaveAfter: 60 * 190,
-  lockJoinAfterLeave: 60 * 90,
+  forceLeaveAfter: 60 * 120,
+  lockJoinAfterLeave: 60 * 60,
 
   checkForceLeaveEvery: 60 * 2,
   checkReVerifyEvery: 60 * 2,
 
-  streamPerPage: 100,
+  streamPerPage: 30,
 
-  viewerMinimumEnter: 7,
+  viewerMinimumEnter: 6,
   viewerMaximumEnter: 30,
-  viewerMinimumLeave: 5,
+  viewerMinimumLeave: 4,
   viewerMaximumLeave: 40,
 
   language: 'en',
 
-  actionOnceEvery: 60 * 190,
+  actionOnceEvery: 60 * 90,
 
   tmiOpts: {
     options: { debug: false },
