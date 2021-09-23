@@ -7,9 +7,14 @@ const reVerify = async (reVerifyChannel) => {
   output(`Re Verify ${reVerifyChannel.length} streams`)
   const queryString = reVerifyChannel.join('&user_login=')
   const url = `https://api.twitch.tv/helix/streams?user_login=${queryString}`
-  const currTimestamp = timestamp()
   const viewerMinimumLeave = config.viewerMinimumLeave
   const viewerMaximumLeave = config.viewerMaximumLeave
+
+  const total = {
+    partViewers: 0,
+    stayViewers: 0,
+    partOffline: 0,
+  }
 
   const res = await superagent
     .get(url)
@@ -23,15 +28,25 @@ const reVerify = async (reVerifyChannel) => {
       })
       return false
     })
+  const currTimestamp = timestamp()
 
   const streams = _.get(res, 'body.data', [])
 
-  if (streams.length === 0) { return false }
+  _.forEach(reVerifyChannel, channel => {
+    _.set(data.channels, `${channel}.reVerify`, currTimestamp + config.reVerifyViewerEvery)
+  })
 
-  const total = {
-    partViewers: 0,
-    stayViewers: 0,
-    partOffline: 0,
+  if (streams.length === 0) {
+    _.forEach(reVerifyChannel, channel => {
+      addAction('part', channel)
+      total.partOffline += 1
+      data.totalLeaveOffline += 1
+    })
+
+    output(
+      `${total.stayViewers} stay == ${total.partViewers} part viewers == ${total.partOffline} part offline`)
+
+    return false
   }
 
   _.forEach(streams, stream => {

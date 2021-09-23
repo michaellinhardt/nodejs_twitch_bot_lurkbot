@@ -55,7 +55,6 @@ const loop = async () => {
 
           if (status && reVerifyTimestamp < currTimestamp) {
             reVerifyChannel.push(channel[0])
-            _.set(data, `channels.${channel[0]}.reVerify`, currTimestamp + config.reVerifyViewerEvery)
           }
           if (reVerifyChannel.length === 100) { return false }
         })
@@ -89,21 +88,21 @@ const loop = async () => {
         reVerifyChannelList.push([channel, reVerify])
       })
       reVerifyChannelList.sort((a, b) => a[1] - b[1])
-      const reVerifyChannel = []
+      const reVerifyChannel2 = []
       _.forEach(reVerifyChannelList, channel => {
         const status = _.get(data.channels, `${channel[0]}.status`, false)
         const reVerifyTimestamp = _.get(data.channels, `${channel[0]}.reVerify`, currTimestamp)
 
         if (status && reVerifyTimestamp < currTimestamp) {
-          reVerifyChannel.push(channel[0])
-          _.set(data, `channels.${channel[0]}.reVerify`, currTimestamp + config.reVerifyViewerEvery)
+          reVerifyChannel2.push(channel[0])
         }
+        if (reVerifyChannel2.length === 100) { return false }
       })
 
-      liveOutput(`${reVerifyChannel.length} / ${config.reVerifyViewerMinimumChannel} channel need to be re-verified`)
+      output(`${reVerifyChannel2.length} / ${config.reVerifyViewerMinimumChannel} channel need to be re-verified`)
 
-      if (reVerifyChannel.length >= config.reVerifyViewerMinimumChannel) {
-        await reVerify(reVerifyChannel)
+      if (reVerifyChannel2.length >= config.reVerifyViewerMinimumChannel) {
+        await reVerify(reVerifyChannel2)
         data.nextApiCall = currTimestamp + config.apiCallEvery
         return true
       }
