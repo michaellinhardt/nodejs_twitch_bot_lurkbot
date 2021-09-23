@@ -31,7 +31,7 @@ const loop = async () => {
     if (data.nextApiCall <= currTimestamp) {
 
       // Actions list empty
-      if (_.isEmpty(data.actions)) {
+      if (data.actions.length < 4) {
         liveOutput('Loop called getStreams()')
         await getStreams()
         liveOutput('getStreams() is over')
@@ -43,14 +43,19 @@ const loop = async () => {
         data.nextReVerifyCheck = currTimestamp + config.checkReVerifyEvery
         // reverify
         liveOutput('Start verifying viewers on current channel')
+        const reVerifyChannelList = []
+        _.forEach(data.channels, ({ reVerify }, channel) => {
+          reVerifyChannelList.push([channel, reVerify])
+        })
+        reVerifyChannelList.sort((a, b) => a[1] - b[1])
         const reVerifyChannel = []
-        _.forEach(data.channels, (dataChannel, channel) => {
-          const status = _.get(dataChannel, 'status', false)
-          const reVerifyTimestamp = _.get(dataChannel, 'reVerify', currTimestamp)
+        _.forEach(reVerifyChannelList, channel => {
+          const status = _.get(data.channels, `${channel[0]}.status`, false)
+          const reVerifyTimestamp = _.get(data.channels, `${channel[0]}.reVerify`, currTimestamp)
 
           if (status && reVerifyTimestamp < currTimestamp) {
-            reVerifyChannel.push(channel)
-            _.set(data, `channels.${channel}.reVerify`, currTimestamp + config.reVerifyViewerEvery)
+            reVerifyChannel.push(channel[0])
+            _.set(data, `channels.${channel[0]}.reVerify`, currTimestamp + config.reVerifyViewerEvery)
           }
           if (reVerifyChannel.length === 100) { return false }
         })
@@ -72,6 +77,40 @@ const loop = async () => {
       data.nextTmiAction = currTimestamp + config.tmiActionEvery
       return true
     }
+
+    // Nothing better to do
+    if (data.nextApiCall <= currTimestamp) {
+
+      data.nextReVerifyCheck = currTimestamp + config.checkReVerifyEvery
+      // reverify
+      liveOutput('Start verifying viewers on current channel')
+      const reVerifyChannelList = []
+      _.forEach(data.channels, ({ reVerify }, channel) => {
+        reVerifyChannelList.push([channel, reVerify])
+      })
+      reVerifyChannelList.sort((a, b) => a[1] - b[1])
+      const reVerifyChannel = []
+      _.forEach(reVerifyChannelList, channel => {
+        const status = _.get(data.channels, `${channel[0]}.status`, false)
+        const reVerifyTimestamp = _.get(data.channels, `${channel[0]}.reVerify`, currTimestamp)
+
+        if (status && reVerifyTimestamp < currTimestamp) {
+          reVerifyChannel.push(channel[0])
+          _.set(data, `channels.${channel[0]}.reVerify`, currTimestamp + config.reVerifyViewerEvery)
+        }
+        if (reVerifyChannel.length === 0) { return false }
+      })
+
+      output(`${reVerifyChannel.length} / ${config.reVerifyViewerMinimumChannel} channel need to be re-verified`)
+
+      if (reVerifyChannel.length > 0) {
+        await reVerify(reVerifyChannel)
+        data.nextApiCall = currTimestamp + config.apiCallEvery
+        return true
+      }
+
+    }
+
     liveOutput('Loop had nothing to do..')
 
   } catch (err) { output(err) }
