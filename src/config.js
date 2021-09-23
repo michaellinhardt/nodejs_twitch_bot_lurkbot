@@ -29,7 +29,7 @@ const config = {
   viewerMinimumLeave: 5,
   viewerMaximumLeave: 40,
 
-  language: undefined,
+  language: 'en',
 
   actionOnceEvery: 60 * 190,
 
