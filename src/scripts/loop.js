@@ -98,12 +98,12 @@ const loop = async () => {
           reVerifyChannel.push(channel[0])
           _.set(data, `channels.${channel[0]}.reVerify`, currTimestamp + config.reVerifyViewerEvery)
         }
-        if (reVerifyChannel.length === 0) { return false }
       })
 
       liveOutput(`${reVerifyChannel.length} / ${config.reVerifyViewerMinimumChannel} channel need to be re-verified`)
 
       if (reVerifyChannel.length > 0) {
+        output(`${reVerifyChannel.length} / ${config.reVerifyViewerMinimumChannel} channel need to be re-verified`)
         await reVerify(reVerifyChannel)
         data.nextApiCall = currTimestamp + config.apiCallEvery
         return true
