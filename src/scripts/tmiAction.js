@@ -31,6 +31,7 @@ const tmiAction = async () => {
           _.set(data.channels, `${action.channel}.locked`, timestamp() + (60 * 60 * 24 * 10))
 
         } else {
+          data.actions.unshift(action)
           output(`Slowing down TMI action: ${err}`)
           config.tmiActionEvery = config.tmiActionSlow
           _.set(data, 'tmiActionSlowUntil', currTimestamp + config.tmiActionSlowUntil)

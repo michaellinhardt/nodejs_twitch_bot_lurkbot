@@ -9,32 +9,6 @@ global.sleep = ms => new Promise(resolve => { setTimeout(resolve, ms) })
 global.config = require('./config')
 global.timestamp = () => parseInt(moment().format('X'), 10)
 global.channelName = channel => channel.replace('#', '').toLowerCase()
-global.data = {
-  serverJoin: 0,
-  serverPart: 0,
-  serverCurr: 0,
-  localJoin: 0,
-  localPart: 0,
-  localCurr: 0,
-  totalLeaveForce: 0,
-  totalLeaveViewers: 0,
-  totalLeaveOffline: 0,
-
-  lastLiveOutput: '',
-  lastGetStreamJoined: 0,
-
-  actionOnceEvery: {},
-
-  channles: {},
-  actions: [],
-
-  nextForceLeaveCheck: timestamp() + config.forceLeaveAfter,
-  nextReVerifyCheck: timestamp() + config.reVerifyViewerEvery,
-  nextApiCall: 0,
-  nextTmiAction: 0,
-
-  output: [],
-}
 global._ = _
 global.superagent = superagent
 global.dump = object => process.stdout.write(prettyjson.render(object))
@@ -100,5 +74,37 @@ global.displayStats = () => {
   console.debug(`\t \t \t ${totalForceLeaveActive} leavePlan \t\t ${totalChannelLock} locked \t\t`)
   console.debug(`${channelPerMinRound} join/min \t\t ${data.totalLeaveForce} forceLeaved \t\t ${data.totalLeaveViewers} viewLeaved \t\t ${data.totalLeaveOffline} offLeaved`)
 }
+
+global.setData = () => {
+  global.data = {
+    serverJoin: 0,
+    serverPart: 0,
+    serverCurr: 0,
+    localJoin: 0,
+    localPart: 0,
+    localCurr: 0,
+    totalLeaveForce: 0,
+    totalLeaveViewers: 0,
+    totalLeaveOffline: 0,
+
+    lastLiveOutput: '',
+    lastGetStreamJoined: 0,
+
+    actionOnceEvery: {},
+
+    channles: {},
+    actions: [],
+
+    nextForceLeaveCheck: timestamp() + config.forceLeaveAfter,
+    nextReVerifyCheck: timestamp() + config.reVerifyViewerEvery,
+    nextApiCall: 0,
+    nextTmiAction: 0,
+
+    output: [],
+  }
+  output('Global data reseted..')
+}
+
+setData()
 
 exports.done = {}

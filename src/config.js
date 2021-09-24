@@ -7,16 +7,16 @@ const config = {
 
   loopEvery: 500,
 
-  apiCallEvery: 2,
-  tmiActionEvery: 1,
+  apiCallEvery: 3,
+  tmiActionEvery: 4,
 
-  tmiActionFast: 1,
-  tmiActionSlow: 5,
-  tmiActionSlowUntil: 90,
+  tmiActionFast: 4,
+  tmiActionSlow: 120,
+  tmiActionSlowUntil: 360,
 
-  reVerifyViewerEvery: 60 * 10,
+  reVerifyViewerEvery: 60 * 5,
   reVerifyViewerOptimalChannel: 100,
-  reVerifyViewerMinimumChannel: 20,
+  reVerifyViewerMinimumChannel: 10,
 
   // forceLeaveAfter: 60 * 1,
   // lockJoinAfterLeave: 60 * 1,
@@ -27,7 +27,7 @@ const config = {
   checkForceLeaveEvery: 60 * 2,
   checkReVerifyEvery: 60 * 2,
 
-  streamPerPage: 50,
+  streamPerPage: 10,
 
   viewerMinimumEnter: 6,
   viewerMaximumEnter: 30,

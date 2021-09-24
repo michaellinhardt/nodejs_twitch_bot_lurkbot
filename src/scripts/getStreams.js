@@ -8,7 +8,7 @@ const getStreams = async () => {
     first: config.streamPerPage,
   }
 
-  if (data.lastGetStreamJoined === 0) {
+  if (data.lastGetStreamJoined < 10) {
     query.first = 100
   }
 

@@ -44,11 +44,13 @@ const start = async () => {
   chatbot.on('disconnected', async reason => {
     loopStatus = false
     output(`Disconnected: LOCK LOOP -> ${reason}`)
-    await sleep(1000)
+    output('Sleep 5sc before reconnect ..')
+    await sleep(5000)
     await chatbot.connect()
   })
 
   chatbot.on('connected', (address, port) => {
+    setData()
     output(`Connected: UNLOCK LOOP -> ${address}:${port}`)
     loopStatus = true
   })

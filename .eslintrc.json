@@ -1,5 +1,6 @@
 {
     "globals": {
+      "setData": true,
       "data": true,
       "loopStatus": true,
       "sleep": true,
