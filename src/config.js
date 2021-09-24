@@ -5,12 +5,16 @@ const config = {
   clientId: 'gp762nuuoqcoxypju8c569th9wz7q5',
   oauth: 'ft5ohuu8298jplqc9k7s2a4xdx57kh',
 
-  loopEvery: 1000,
+  loopEvery: 500,
 
   apiCallEvery: 2,
-  tmiActionEvery: 3,
+  tmiActionEvery: 1,
 
-  reVerifyViewerEvery: 60 * 15,
+  tmiActionFast: 1,
+  tmiActionSlow: 5,
+  tmiActionSlowUntil: 90,
+
+  reVerifyViewerEvery: 60 * 10,
   reVerifyViewerOptimalChannel: 100,
   reVerifyViewerMinimumChannel: 20,
 
@@ -23,7 +27,7 @@ const config = {
   checkForceLeaveEvery: 60 * 2,
   checkReVerifyEvery: 60 * 2,
 
-  streamPerPage: 30,
+  streamPerPage: 50,
 
   viewerMinimumEnter: 6,
   viewerMaximumEnter: 30,

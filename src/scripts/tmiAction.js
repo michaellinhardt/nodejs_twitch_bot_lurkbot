@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import config from '../config'
 
 const tmiAction = async () => {
   const action = data.actions.shift()
@@ -23,6 +24,18 @@ const tmiAction = async () => {
     }
 
     await chatbot[action.action](action.channel)
+      .catch(err => {
+        const currTimestamp = timestamp()
+        if (err === 'msg_banned') {
+          output(`Banned from: ${action.channel}.. bitch! locking channel`)
+          _.set(data.channels, `${action.channel}.locked`, timestamp() + (60 * 60 * 24 * 10))
+
+        } else {
+          output(`Slowing down TMI action: ${err}`)
+          config.tmiActionEvery = config.tmiActionSlow
+          _.set(data, 'tmiActionSlowUntil', currTimestamp + config.tmiActionSlowUntil)
+        }
+      })
     data.nextTmiAction = currTimestamp + config.tmiActionEvery
     liveOutput(`TMI ${action.action} @ ${action.channel}`)
   }

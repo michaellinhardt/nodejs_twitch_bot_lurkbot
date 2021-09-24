@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import config from '../config'
+import config, { tmiActionFast } from '../config'
 
 const { getStreams } = require('./getStreams').default
 const { reVerify } = require('./reVerify').default
@@ -7,6 +7,7 @@ const { tmiAction } = require('./tmiAction').default
 const { addAction } = require('./addAction').default
 
 const loop = async () => {
+  if (!loopStatus) { return false }
   try {
     const currTimestamp = timestamp()
 
@@ -70,6 +71,12 @@ const loop = async () => {
     }
 
     // exec tmi actions
+    const tmiActionSlowUntil = _.get(data, 'tmiActionSlowUntil', 0)
+    if (tmiActionSlowUntil <= currTimestamp) {
+      config.tmiActionEvery = tmiActionFast
+      _.set(data, 'tmiActionSlowUntil', currTimestamp + (60 * 60 * 24 * 10))
+    }
+
     if (!_.isEmpty(data.actions)
     && data.nextTmiAction <= currTimestamp) {
       await tmiAction()
@@ -120,7 +127,9 @@ const loop = async () => {
 
     liveOutput('Loop had nothing to do..')
 
-  } catch (err) { output(err) }
+  } catch (err) {
+    output(`ici - ${err}`)
+  }
 
 }
 

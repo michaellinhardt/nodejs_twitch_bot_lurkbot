@@ -4,6 +4,7 @@ import superagent from 'superagent'
 import prettyjson from 'prettyjson'
 import moment from 'moment'
 
+global.loopStatus = false
 global.sleep = ms => new Promise(resolve => { setTimeout(resolve, ms) })
 global.config = require('./config')
 global.timestamp = () => parseInt(moment().format('X'), 10)
@@ -68,7 +69,7 @@ const displayOutput = () => {
     console.debug(output)
     iOutput += 1
   }
-  console.debug(`\nLIVE: ${data.lastLiveOutput}\n`)
+  console.debug(`\nLIVE: ${data.lastLiveOutput}\nTmi Action Every: ${config.tmiActionEvery}\n`)
 }
 
 global.displayStats = () => {
@@ -90,11 +91,14 @@ global.displayStats = () => {
   const actions = { join: 0, part: 0 }
   _.forEach(data.actions, action => { actions[action.action] += 1 })
 
+  const channelPerMin = data.serverCurr / ((currTimestamp - data.startTimestamp) / 60)
+  const channelPerMinRound = Math.round((channelPerMin + Number.EPSILON) * 100) / 100
+
   console.debug(`WAITING \t\t ------ \t\t ${actions.join} join \t\t ${actions.part} part`)
   console.debug(`EXECUTED \t\t ${data.localCurr} active \t\t ${data.localJoin} join \t\t ${data.localPart} part`)
   console.debug(`VALIDATED: \t\t ${data.serverCurr} active \t\t ${data.serverJoin} join \t\t ${data.serverPart} part`)
   console.debug(`\t \t \t ${totalForceLeaveActive} leavePlan \t\t ${totalChannelLock} locked \t\t`)
-  console.debug(`\t \t \t ${data.totalLeaveForce} forceLeaved \t\t ${data.totalLeaveViewers} viewLeaved \t\t ${data.totalLeaveOffline} offLeaved`)
+  console.debug(`${channelPerMinRound} join/min \t\t ${data.totalLeaveForce} forceLeaved \t\t ${data.totalLeaveViewers} viewLeaved \t\t ${data.totalLeaveOffline} offLeaved`)
 }
 
 exports.done = {}

@@ -9,8 +9,7 @@ const loop = require('./scripts/loop').default
 
 const start = async () => {
   global.chatbot = new tmi.client(tmiOpts)
-  await chatbot.connect()
-  await sleep(1000)
+  await sleep(100)
 
   chatbot.on('join', (channel, username, self) => {
     if (self) {
@@ -42,7 +41,22 @@ const start = async () => {
     }
   })
 
+  chatbot.on('disconnected', async reason => {
+    loopStatus = false
+    output(`Disconnected: LOCK LOOP -> ${reason}`)
+    await sleep(1000)
+    await chatbot.connect()
+  })
+
+  chatbot.on('connected', (address, port) => {
+    output(`Connected: UNLOCK LOOP -> ${address}:${port}`)
+    loopStatus = true
+  })
+
+  await chatbot.connect()
+  await sleep(1000)
   loop.start()
+  data.startTimestamp = timestamp()
 }
 
 start()

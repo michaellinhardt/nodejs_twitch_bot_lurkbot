@@ -7,7 +7,7 @@ const stalk = async () => {
     .set('Authorization', `Bearer ${config.oauth}`)
     .set('Accept', 'application/json')
     .catch((err) => {
-      output(err, err.response, err.message)
+      output(`zbra - ${err}, ${err.response}, ${err.message}`)
       data.stream = undefined
     })
 

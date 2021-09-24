@@ -1,6 +1,7 @@
 {
     "globals": {
       "data": true,
+      "loopStatus": true,
       "sleep": true,
       "output": true,
       "liveOutput": true,

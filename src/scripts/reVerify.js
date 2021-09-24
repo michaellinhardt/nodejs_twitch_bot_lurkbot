@@ -22,7 +22,7 @@ const reVerify = async (reVerifyChannel) => {
     .set('Authorization', `Bearer ${config.oauth}`)
     .set('Accept', 'application/json')
     .catch((err) => {
-      output(err, err.response, err.message)
+      output(`lol ${err}, ${err.response}, ${err.message}`)
       _.forEach(data.channels, dataChannel => {
         _.get(dataChannel, 'reVerify', currTimestamp + (60 * 5))
       })

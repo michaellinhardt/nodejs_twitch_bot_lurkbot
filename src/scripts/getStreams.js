@@ -19,7 +19,7 @@ const getStreams = async () => {
     .set('Authorization', `Bearer ${config.oauth}`)
     .set('Accept', 'application/json')
     .catch((err) => {
-      output(err, err.response, err.message)
+      output(`lul ${err}, ${err.response}, ${err.message}`)
       return false
     })
 
